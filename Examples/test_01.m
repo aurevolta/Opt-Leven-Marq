@@ -60,3 +60,47 @@ plot(FGS(id),fcn(FGS(id)),'*')
 plot(a_best,testfun_B(a_best,[],1),'rx')
 
 
+%% time comparison
+
+fun = @(x) testfun_A(x,[],1);
+version = 'fast';
+opt = optimoptions('fsolve','algorithm','levenberg-marquardt',...
+    'display','none','Jacobian','on','tolx',1e-14,'FunctionTolerance',1e-14);
+
+[T1,T2,T3]=deal(zeros(1,1000));
+
+
+for i = 1 : length(T1)
+    a0 = rand*100;
+    
+    tic
+    sol = fsolve(fun,a0,opt);
+    T1(i)=toc;
+    
+    
+    tic
+    parameters = OLM_set_par(a0,@testfun_A,version);
+    parameters = OLM_robust_initial_estimation(parameters);
+    [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM(parameters);
+    T2(i)=toc;
+    
+    tic
+    parameters = OLM_set_par(a0,@testfun_A,'robust');
+    parameters.n_iter=300;
+    parameters.max_failures=10;
+    parameters = OLM_robust_initial_estimation(parameters);
+    [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM(parameters);
+    T3(i)=toc;
+    
+end
+
+figure
+plot(T1,'linewidth',2)
+hold on
+plot(T2,'linewidth',2)
+plot(T3,'linewidth',2)
+grid on
+axis tight
+legend('Matlab fsolve','OLM fast','OLM robust')
+set(gca,'ylim',[0 max([T1,T2,T3])])
+title 'Execution time test'
