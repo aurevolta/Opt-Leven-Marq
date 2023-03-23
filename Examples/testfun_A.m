@@ -1,4 +1,4 @@
-function [r,J] = testfun(a,data,compute_r)
+function [r,J] = testfun_A(a,data,compute_r)
 
 g = 1;
 

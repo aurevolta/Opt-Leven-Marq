@@ -1,7 +1,7 @@
 function [r,a_new] = OLM_ROBUST_STEP_2(parameters,B,U1,g,D,lambda)
 %OLM_ROBUST_STEP_2 Second step of the robust LM step
 %
-% [r,a_new] = LM_ROBUST_STEP_2(a,na,data,n,B,U1,g,D,lambda) computes the
+% [r,a_new] = OLM_ROBUST_STEP_2(a,na,data,n,B,U1,g,D,lambda) computes the
 % residual [r] and the new state [a_new] using the output
 % from the step 1 [B], [U1], [g], [D], [lambda] as well as the state [a],
 % its dimension [na], the data set [data] and the number of

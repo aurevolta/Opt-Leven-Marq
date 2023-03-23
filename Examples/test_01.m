@@ -34,3 +34,29 @@ toc
 figure,semilogy(CHI)
 a_best-1
 n_iterations
+
+
+
+%%
+
+fun = @testfun_B;
+version = 'fast';
+parameters = OLM_set_par(rand,fun,version);
+
+FGS = linspace(-4*pi,4*pi,9)+1e-12;
+% FGS = linspace(pi/2,4*pi,5);
+
+
+[a_best,chi_best,~,~,~,~,~,~,id] = OLM(parameters,FGS);
+
+fcn = @(a) -sin(a)./a + 0.5;
+
+figure
+plot(linspace(-4*pi,4*pi,50),fcn(linspace(-4*pi,4*pi,50)))
+hold on
+plot(FGS,fcn(FGS),'ko')
+plot(FGS(id),fcn(FGS(id)),'*')
+
+plot(a_best,testfun_B(a_best,[],1),'rx')
+
+

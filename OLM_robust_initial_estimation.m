@@ -1,7 +1,7 @@
 function parameters = OLM_robust_initial_estimation(parameters)
 % OLM_ROBUST_INITIAL_ESTIMATION Estimates the best initial damping parameter
 %
-% parameters = ROBUST_INITIAL_ESTIMATION(parameters) computes the initial damping parameter
+% parameters = OLM_ROBUST_INITIAL_ESTIMATION(parameters) computes the initial damping parameter
 % [mu0] and the weights [W] from the parameter structure [parameters] and
 % adjourne the structure.
 % [mu0] is computed looking at different initial damping parameters for the
