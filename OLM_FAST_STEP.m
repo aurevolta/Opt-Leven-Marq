@@ -1,14 +1,14 @@
-function [a_new,r,lambda] = LM_FAST_STEP(parameters)
-% LM_FAST_STEP Fastest version of LM single step
+function [a_new,r,lambda] = OLM_FAST_STEP(parameters)
+% OLM_FAST_STEP Fastest version of LM single step
 %
-% [a_new,r,lambda] = LM_FAST_STEP(a,na,data,n,compute_r,mu0,W,r_old)
+% [a_new,r,lambda] = OLM_FAST_STEP(a,na,data,n,compute_r,mu0,W,r_old)
 % computes the new iteration [a_new] with the new residual [r] and the
 % updated damping [lambda] from the current state estimate [a], its
 % dimensions [na], the data seta [data], the number of
 % equations/measurements [n] the flag [compute_r], the initial damping
 % [mu0] and the previous residual [r_old]
 % 
-% see also LM_FAST, SCALEJACOBIAN
+% see also OLM_FAST, OLM_SCALEJACOBIAN
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
@@ -29,7 +29,7 @@ end
 lambda = (parameters.mu0*norm(r)^parameters.lambda_exponent)/parameters.n;
 
 % scale the Jacobian
-[Jscaled,D] = scaleJacobian(J);
+[Jscaled,D] = OLM_scaleJacobian(J);
 
 % compute the A matrix
 A = Jscaled'*diag(parameters.W)*Jscaled;

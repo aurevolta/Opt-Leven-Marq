@@ -1,13 +1,13 @@
-function [lambda_best,rho_best,R] = LM_ROBUST_STEP_LAMBDA(parameters,lambda)
-% LM_ROBUST_STEP_LAMBDA Routine to compute the best damping step
+function [lambda_best,rho_best,R] = OLM_ROBUST_STEP_LAMBDA(parameters,lambda)
+% OLM_ROBUST_STEP_LAMBDA Routine to compute the best damping step
 %
-% [lambda_best,rho_best,R] = LM_ROBUST_STEP_LAMBDA(parameters,lambda)
+% [lambda_best,rho_best,R] = OLM_ROBUST_STEP_LAMBDA(parameters,lambda)
 % computes the best damping [lambda_best] along with the best increment 
 % [rho_best] and the relative residual vector [R] from the parameters 
 % structure [parameters] 
 %
-% see also ROBUST_INITIAL_ESTIMATION, LM_ROBUST_STEP_1, LM_ROBUST_STEP_2,
-% METRIC
+% see also OLM_ROBUST_INITIAL_ESTIMATION, OLM_ROBUST_STEP_1, 
+% OLM_ROBUST_STEP_2, OLM_METRIC
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
@@ -16,7 +16,7 @@ function [lambda_best,rho_best,R] = LM_ROBUST_STEP_LAMBDA(parameters,lambda)
 %%
 
 % first step is computed just once
-[B,U1,g,D,~] = LM_ROBUST_STEP_1(parameters);
+[B,U1,g,D,~] = OLM_ROBUST_STEP_1(parameters);
 
 % initialize 
 RHO = zeros(1,length(lambda));
@@ -27,9 +27,9 @@ r = zeros(parameters.n,I);
 % computes all the steps
 for i = 1 : I
     % second step
-    [r(:,i),~] = LM_ROBUST_STEP_2(parameters,B,U1,g,D,lambda(i));
+    [r(:,i),~] = OLM_ROBUST_STEP_2(parameters,B,U1,g,D,lambda(i));
     % compute the metric
-    [~,rho] = metric(r(:,i),parameters);
+    [~,rho] = OLM_metric(r(:,i),parameters);
     % save the metric
     RHO(i) = rho;
 end

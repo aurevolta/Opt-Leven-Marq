@@ -1,5 +1,5 @@
-function [Jscaled,D] = scaleJacobian(J)
-% SCALEJACOBIAN Jacobian normalization by column
+function [Jscaled,D] = OLM_scaleJacobian(J)
+% OLM_SCALEJACOBIAN Jacobian normalization by column
 %
 % [Jscaled,D] = SCALEJACOBIAN(J) computes the [n x m]  scaled Jacobian 
 % [Jscaled] from the [n x m] Jacobian matrix [J] and the scaling matrix [D]

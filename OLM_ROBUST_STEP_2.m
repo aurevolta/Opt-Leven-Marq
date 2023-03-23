@@ -1,5 +1,5 @@
-function [r,a_new] = LM_ROBUST_STEP_2(parameters,B,U1,g,D,lambda)
-%LM_ROBUST_STEP_2 Second step of the robust LM step
+function [r,a_new] = OLM_ROBUST_STEP_2(parameters,B,U1,g,D,lambda)
+%OLM_ROBUST_STEP_2 Second step of the robust LM step
 %
 % [r,a_new] = LM_ROBUST_STEP_2(a,na,data,n,B,U1,g,D,lambda) computes the
 % residual [r] and the new state [a_new] using the output
@@ -7,7 +7,7 @@ function [r,a_new] = LM_ROBUST_STEP_2(parameters,B,U1,g,D,lambda)
 % its dimension [na], the data set [data] and the number of
 % equations/measurements. 
 %
-% see also LM_ROBUST_STEP_1, LM_ROBUST_STEP_LAMBDA
+% see also OLM_ROBUST_STEP_1, OLM_ROBUST_STEP_LAMBDA
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta

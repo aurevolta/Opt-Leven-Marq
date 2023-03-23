@@ -1,14 +1,14 @@
-function [chi,rho] = metric(r,parameters)
-% METRIC Metric and advancement computation 
+function [chi,rho] = OLM_metric(r,parameters)
+% OLM_METRIC Metric and advancement computation 
 %
-% [chi,rho]=METRIC(r,W,chi_best) computes the metric [chi] and the
+% [chi,rho] = OLM_METRIC(r,W,chi_best) computes the metric [chi] and the
 % advancement parameter [rho] using the residual vector [r], the weighting
 % factors [W] and the best metric [chi_best] achieved in the previous steps
 % and stored inside the input structure [parameters]
 % Dimensions of [r] and [W] shall be consistent, [chi,rho] are 
 % scalars. 
 %
-% see also LM, LM_FAST, LM_ROBUST
+% see also OLM, OLM_FAST, OLM_ROBUST
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta

@@ -1,7 +1,7 @@
-function [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA,id] = LM(parameters,FGS)
-% LM Levenberg-Marquardt minimization algorithm
+function [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA,id] = OLM(parameters,FGS)
+% OLM Levenberg-Marquardt minimization algorithm
 %
-% [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = LM(parameters)
+% [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM(parameters)
 % computes the best estimate of the state [a_best], its chi squared criterion
 % [chi_best] as well as the weights [W], the number of iterations
 % [n_iterations], the story of criterion [CHI], state [A], residual
@@ -9,7 +9,7 @@ function [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA,id] = LM(paramete
 % contains all the info on the problem and the Levenberg-Marquardt
 % algorithm options, including also the version: 'fast' or 'robust'.
 %
-% [a_best,chi_best,~,~,~,~,~,~,id] = LM(parameters,FGS) calls [n] times the function with
+% [a_best,chi_best,~,~,~,~,~,~,id] = OLM(parameters,FGS) calls [n] times the function with
 % [n] different initial guesses provided in the new input [FGS]. This
 % version picks the best estimate from all the first guesses [FGS] and
 % outputs the solution [a_best] and the corresponding fitting criterion
@@ -19,7 +19,7 @@ function [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA,id] = LM(paramete
 %
 %
 %
-% see also LM_FAST, LM_ROBUST, SET_LM_PAR
+% see also OLM_FAST, OLM_ROBUST, OLM_SET_PAR
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
@@ -32,11 +32,11 @@ if nargin == 1
     % switch between modes
     if strcmp(parameters.version,'fast')
         
-        [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = LM_FAST(parameters);
+        [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM_FAST(parameters);
         
     elseif strcmp(parameters.version,'robust')
         
-        [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = LM_ROBUST(parameters);
+        [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM_ROBUST(parameters);
     else
         error 'wrong version selected'
     end
@@ -65,13 +65,13 @@ else
         parameters.a = FGS(:,i);
         
         % set robust initial guess
-        parameters = robust_initial_estimation(parameters);
+        parameters = OLM_robust_initial_estimation(parameters);
         
         % compute again
         if strcmp(parameters.version,'fast')
-            [a(:,i),chi(i)] = LM_FAST(parameters);
+            [a(:,i),chi(i)] = OLM_FAST(parameters);
         elseif strcmp(parameters.version,'robust')  
-            [a(:,i),chi(i)] = LM_ROBUST(parameters);
+            [a(:,i),chi(i)] = OLM_ROBUST(parameters);
         end
         
     end
