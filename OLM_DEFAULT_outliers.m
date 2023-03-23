@@ -1,7 +1,7 @@
-function  W = DEFAULToutliers_removal_function(r,parameters)
-% DEFAULTOUTLIERS_REMOVAL_FUNCTION Default no-removal function
+function  W = OLM_DEFAULT_outliers(r,parameters)
+% OLM_DEFAULT_OUTLIERS Default no-removal function
 %
-% W = DEFAULToutliers_removal_function(r,parameters) computes the
+% W = OLM_DEFAULT_OUTLIERS(r,parameters) computes the
 % default weights [W] of the residual [r] from the input parameter strcuture 
 % [parameters]
 %

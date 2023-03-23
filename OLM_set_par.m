@@ -1,20 +1,20 @@
-function parameters = set_LM_par(a0,fun,version,data,removal_function)
-% SET_LM_PAR Set LM parameter structure
+function parameters = OLM_set_par(a0,fun,version,data,removal_function)
+% OLM_SET_PAR Set LM parameter structure
 %
-% parameters = SET_LM_PAR(a0,fun,version) construct the structure [parameters] for
+% parameters = OLM_SET_PAR(a0,fun,version) construct the structure [parameters] for
 % the minimization of the function [fun] with initial guess [a0]. No data,
 % equation remove options are considered in this case but the variable
 % [version] allows to choose between a robust but slower version ['robust']
 % and a computationally faster implementation ['fast'].
 %
-% parameters = SET_LM_PAR(a0,fun,version,data) is the same as before but the input
+% parameters = OLM_SET_PAR(a0,fun,version,data) is the same as before but the input
 % [data] is added in the structure. No restrictions on the natrue of [data]
 %
-% parameters = SET_LM_PAR(a0,fun,version,data,removal_function) adds an outlier
+% parameters = OLM_SET_PAR(a0,fun,version,data,removal_function) adds an outlier
 % removal function handle [removal_function] with a precise input-output
 % structure.
 %
-% see also LM, LM_FAST, LM_ROBUST
+% see also OLM, OLM_FAST, OLM_ROBUST
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
@@ -39,7 +39,7 @@ if nargin > 4
         parameters.removal_function = removal_function;
 else
     parameters.removal = 0;
-    parameters.removal_function = @DEFAULToutliers_removal_function;
+    parameters.removal_function = @OLM_DEFAULT_outliers;
 end
 
 % initialize flags
@@ -98,7 +98,7 @@ parameters.damping = 1;
 
 %% computes the initial chi squared criterion
 parameters.chi_best = 0;
-parameters.chi_best = metric(r,parameters);
+parameters.chi_best = OLM_metric(r,parameters);
 
 
 end
