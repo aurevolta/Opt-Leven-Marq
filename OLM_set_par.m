@@ -97,7 +97,7 @@ parameters.chi_threshold = 1e-24;
 parameters.damping = 1;
 
 %% computes the initial chi squared criterion
-parameters.chi_best = 0;
+parameters.chi_best = zeros(1,'like',r);
 parameters.chi_best = OLM_metric(r,parameters);
 
 
