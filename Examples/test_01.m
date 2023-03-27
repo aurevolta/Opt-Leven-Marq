@@ -67,7 +67,7 @@ version = 'fast';
 opt = optimoptions('fsolve','algorithm','levenberg-marquardt',...
     'display','none','Jacobian','on','tolx',1e-14,'FunctionTolerance',1e-14);
 
-[T1,T2,T3]=deal(zeros(1,1000));
+[T1,T2,T3,E1,E2,E3]=deal(zeros(1,1000));
 
 
 for i = 1 : length(T1)
@@ -76,13 +76,14 @@ for i = 1 : length(T1)
     tic
     sol = fsolve(fun,a0,opt);
     T1(i)=toc;
-    
+    E1(i)=abs(1-sol);
     
     tic
     parameters = OLM_set_par(a0,@testfun_A,version);
     parameters = OLM_robust_initial_estimation(parameters);
     [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM(parameters);
     T2(i)=toc;
+    E2(i)=abs(1-a_best);
     
     tic
     parameters = OLM_set_par(a0,@testfun_A,'robust');
@@ -91,7 +92,7 @@ for i = 1 : length(T1)
     parameters = OLM_robust_initial_estimation(parameters);
     [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM(parameters);
     T3(i)=toc;
-    
+    E3(i)=abs(1-a_best);
 end
 
 figure
@@ -104,3 +105,16 @@ axis tight
 legend('Matlab fsolve','OLM fast','OLM robust')
 set(gca,'ylim',[0 max([T1,T2,T3])])
 title 'Execution time test'
+
+
+figure
+semilogy(E1,'linewidth',2)
+hold on
+semilogy(E2,'linewidth',2)
+semilogy(E3,'linewidth',2)
+grid on
+axis tight
+legend('Matlab fsolve','OLM fast','OLM robust')
+% set(gca,'ylim',[0 max([T1,T2,T3])])
+title 'Test precision'
+ylabel 'error'
