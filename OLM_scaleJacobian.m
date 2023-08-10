@@ -12,11 +12,11 @@ function [Jscaled,D] = OLM_scaleJacobian(J)
 
 %%
 
-% compute the length of the i-th column of jacobian
-L = sqrt(sum(J.^2));
+% compute the norm of the i-th column of jacobian
+L = sqrt(sum(J.^2,1));
 
 if sum(L==0)>0
-    % if one or more column are zero length (singularity issue) avoid to
+    % if one or more column are zero norm (singularity issue) avoid to
     % normalize
     D = eye(length(L));
     Jscaled = J;
