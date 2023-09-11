@@ -33,8 +33,8 @@ lambda = (parameters.mu0*norm(r)^parameters.lambda_exponent)/parameters.n;
 
 % compute the A matrix
 A = Jscaled'*diag(parameters.W)*Jscaled;
-% A=A+lambda*diag(diag(A)); % if it is scaled diag(A)=eye(na)
-A = A+lambda*eye(parameters.na);
+% A = A + lambda*diag(diag(A)); % if it is scaled diag(A)=>eye(na)
+A = A + lambda*eye(parameters.na);
 
 % compute the gradient
 b = -Jscaled'*diag(parameters.W)*r;
@@ -43,10 +43,10 @@ b = -Jscaled'*diag(parameters.W)*r;
 delta_a = D*(A\b);
 
 % assemble the step state (1:parameters.na,1) 
-a_new= parameters.a(1:parameters.na,1)+delta_a(1:parameters.na,1);
+a_new = parameters.a(1:parameters.na,1)+delta_a(1:parameters.na,1);
 
 % check the new solution (compute just the residual)
-[ru] = parameters.fun(a_new,parameters.data,1);
- r = ru(1:parameters.n,1);
+ru = parameters.fun(a_new,parameters.data,1);
+r  = ru(1:parameters.n,1);
  
 end

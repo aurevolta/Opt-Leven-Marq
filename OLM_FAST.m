@@ -1,14 +1,12 @@
-function [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM_FAST(parameters)
+function [a_best,chi_best,W,n_iterations] = OLM_FAST(parameters)
 % OLM_FAST LM algorithm fastest version
 %
 % [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM_FAST(parameters) 
 % computes the best estimate of the state [a_best], its chi squared criterion 
-% [chi_best] as well as the weights [W], the number of iterations 
-% [n_iterations], the story of criterion [CHI], state [A], residual
-% [RESIDUAL] and damping paramters [LAMBDA]. The latest are matrices of 
-% dimensions [n] times [n_iter] but carries info until [n_iter]. 
+% [chi_best] as well as the weights [W], and the number of iterations 
+% [n_iterations].
 % It requires as input the structure of paramters [parameters] created with
-% the corresponding function SET_LM_PAR
+% the corresponding function OLM_SET_PAR
 %
 % see also OLM_FAST_STEP, OLM_METRIC, OLM_SET_PAR
 
@@ -17,18 +15,12 @@ function [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM_FAST(param
 
 %%
 
-
-parameters.compute_r = 1; % force if necessary
-
-% hystory values recording variables
-CHI = zeros(1,parameters.n_iter);
-LAMBDA = zeros(1,parameters.n_iter);
-A = zeros(parameters.na,parameters.n_iter);
-RESIDUAL = zeros(parameters.n,parameters.n_iter);
+% force residual computation if necessary
+parameters.compute_r = 1; 
 
 % initialize the counters
-counter=0;
-iter_counter=0;
+counter      = 0;
+iter_counter = 0;
 
 % actual computation
 for i=1:parameters.n_iter
@@ -37,16 +29,10 @@ for i=1:parameters.n_iter
     iter_counter = i;
     
     % use the fast LM step
-    [a_new,r_new,lambda] = OLM_FAST_STEP(parameters);
+    [a_new,r_new,~] = OLM_FAST_STEP(parameters);
     
     % compute the metric
     [chi,rho] = OLM_metric(r_new,parameters);
-    
-    % save data for diagnostics
-    CHI(i) = chi; 
-    A(1:parameters.na,i) = a_new;
-    RESIDUAL(1:parameters.n,i) = r_new;
-    LAMBDA(i) = lambda;
     
     % check if the step is accepted or not
     if rho > 0
@@ -75,7 +61,7 @@ for i=1:parameters.n_iter
         
     else
         % step rejected
-        counter = counter+1;
+        counter = counter + 1;
         
         parameters.mu0 = parameters.mu0*5; % ADD
 
@@ -89,11 +75,13 @@ for i=1:parameters.n_iter
 end
 
 %% outputs 
-a_best = parameters.a;
-chi_best = parameters.chi_best;
-W = parameters.W;
+
+% save solution, error and weights
+a_best          = parameters.a;
+chi_best        = parameters.chi_best;
+W               = parameters.W;
 
 % save the number of iterations
-n_iterations = iter_counter;
+n_iterations    = iter_counter;
 
 end
