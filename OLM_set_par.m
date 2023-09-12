@@ -14,12 +14,12 @@ function parameters = OLM_set_par(a0,fun,version,data,removal_function)
 % removal function handle [removal_function] with a precise input-output
 % structure.
 %
-% see also OLM, OLM_FAST, OLM_ROBUST
+% see also OLM, OLM_FAST, OLM_ROBUST, OLM_DEFAULT_METRIC
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
 
-%%
+%% input parsing
 
 % states related info
 parameters.a = a0;
@@ -42,6 +42,19 @@ else
     parameters.removal_function = @OLM_DEFAULT_outliers;
 end
 
+% initial computation of user defined function
+
+if isa(fun,'function_handle')
+    
+    % compute the first residual
+    r = fun(a0,data,1);
+    
+else
+    error 'User defined function is not a function'
+end
+
+%% initialization
+
 % initialize flags
 parameters.compute_r = 1;
 
@@ -57,18 +70,8 @@ parameters.fun = fun;
 % set the LM mode
 parameters.version = version;
 
-
-% initial computation of user defined function
-
-if isa(fun,'function_handle')
-    
-    % compute the first residual
-    r = fun(a0,data,1);
-    
-else
-    error 'User defined function is not a function'
-end
-
+% set the default criterion
+parameters.metric = @OLM_DEFAULT_metric;
 
 % extract info
 parameters.r = r;
@@ -98,8 +101,9 @@ parameters.damping = 1;
 
 %% computes the initial chi squared criterion
 parameters.chi_best = zeros(1,'like',r);
-parameters.chi_best = OLM_metric(r,parameters);
 
+% parameters.chi_best = OLM_DEFAULT_metric(r,parameters);
+parameters.chi_best = parameters.metric(r,parameters);
 
 end
 

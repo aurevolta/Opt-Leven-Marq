@@ -8,18 +8,17 @@ function [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM_ROBUST(par
 % [RESIDUAL] and damping paramters [LAMBDA]. The latest are matrices of 
 % dimensions [n] times [n_iter] but carries info until [n_iter]. 
 % It requires as input the structure of paramters [parameters] created with
-% the corresponding function SET_LM_PAR
+% the corresponding function OLM_SET_PAR
 %
-% see also OLM_FAST_STEP, OLM_METRIC, OLM_SET_PAR
+% see also OLM_FAST_STEP, OLM_DEFAULT_METRIC, OLM_SET_PAR
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
 
 %%
 
-
-parameters.compute_r = 1; % force if necessary
-
+% force residual computation if necessary
+parameters.compute_r = 1; 
 
 % hystory values recording variables
 CHI = zeros(1,parameters.n_iter);
@@ -54,7 +53,7 @@ for i=1:parameters.n_iter
 
     
     % compute the metric
-    [chi,rho] = OLM_metric(r_new,parameters);
+    [chi,rho] = parameters.metric(r_new,parameters);
     
     % save data for diagnostics
     CHI(i) = chi; 

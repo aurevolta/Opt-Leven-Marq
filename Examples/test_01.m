@@ -9,14 +9,10 @@ version = 'fast';
 
 tic
 parameters = OLM_set_par(a0,fun,version);
-
-
 parameters = OLM_robust_initial_estimation(parameters);
-
-
-[a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM(parameters);
+[a_best,chi_best,W,n_iterations] = OLM(parameters);
 toc
-figure,semilogy(CHI)
+
 a_best-1
 n_iterations
 
@@ -47,18 +43,18 @@ FGS = linspace(-4*pi,4*pi,9)+1e-12;
 % FGS = linspace(pi/2,4*pi,5);
 
 
-[a_best,chi_best,~,~,~,~,~,~,id] = OLM(parameters,FGS);
+[a_best,chi_best,id] = OLM(parameters,FGS);
 
 fcn = @(a) -sin(a)./a + 0.5;
 
 figure
-plot(linspace(-4*pi,4*pi,50),fcn(linspace(-4*pi,4*pi,50)))
+plot(linspace(-4*pi,4*pi,100),fcn(linspace(-4*pi,4*pi,100)))
 hold on
 plot(FGS,fcn(FGS),'ko')
 plot(FGS(id),fcn(FGS(id)),'*')
-
 plot(a_best,testfun_B(a_best,[],1),'rx')
-
+legend('function','Initial guesses','best starting point','solution','location','best')
+grid on
 
 %% time comparison
 
@@ -81,7 +77,7 @@ for i = 1 : length(T1)
     tic
     parameters = OLM_set_par(a0,@testfun_A,version);
     parameters = OLM_robust_initial_estimation(parameters);
-    [a_best,chi_best,W,n_iterations,CHI,A,RESIDUAL,LAMBDA] = OLM(parameters);
+    [a_best,chi_best,W,n_iterations] = OLM(parameters);
     T2(i)=toc;
     E2(i)=abs(1-a_best);
     
@@ -102,8 +98,9 @@ plot(T2,'linewidth',2)
 plot(T3,'linewidth',2)
 grid on
 axis tight
+set(gca,'Xlim',[10,length(T1)])
 legend('Matlab fsolve','OLM fast','OLM robust')
-set(gca,'ylim',[0 max([T1,T2,T3])])
+% set(gca,'ylim',[0 max([T1,T2,T3])])
 title 'Execution time test'
 
 

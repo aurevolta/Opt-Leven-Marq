@@ -7,7 +7,7 @@ function [lambda_best,rho_best,R] = OLM_ROBUST_STEP_LAMBDA(parameters,lambda)
 % structure [parameters] 
 %
 % see also OLM_ROBUST_INITIAL_ESTIMATION, OLM_ROBUST_STEP_1, 
-% OLM_ROBUST_STEP_2, OLM_METRIC
+% OLM_ROBUST_STEP_2, OLM_DEFAULT_METRIC
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
@@ -29,7 +29,7 @@ for i = 1 : I
     % second step
     [r(:,i),~] = OLM_ROBUST_STEP_2(parameters,B,U1,g,D,lambda(i));
     % compute the metric
-    [~,rho] = OLM_metric(r(:,i),parameters);
+    [~,rho] = parameters.metric(r(:,i),parameters);
     % save the metric
     RHO(i) = rho;
 end
