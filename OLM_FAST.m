@@ -8,7 +8,7 @@ function [a_best,chi_best,W,n_iterations] = OLM_FAST(parameters)
 % It requires as input the structure of paramters [parameters] created with
 % the corresponding function OLM_SET_PAR
 %
-% see also OLM_FAST_STEP, OLM_METRIC, OLM_SET_PAR
+% see also OLM_FAST_STEP, OLM_DEFAULT_METRIC, OLM_SET_PAR
 
 % SPDX-License-Identifier: Apache-2.0
 % 2016 Aureliano Rivolta
@@ -32,7 +32,7 @@ for i=1:parameters.n_iter
     [a_new,r_new,~] = OLM_FAST_STEP(parameters);
     
     % compute the metric
-    [chi,rho] = OLM_metric(r_new,parameters);
+    [chi,rho] = parameters.metric(r_new,parameters);
     
     % check if the step is accepted or not
     if rho > 0
